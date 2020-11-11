@@ -1,6 +1,7 @@
 import { createCanvas, Image, Canvas } from 'canvas'
 import { promises } from 'fs'
 import { config } from './config'
+import { Filter } from './types'
 
 /**
  * Return the name (without the extension) of the image specified by the path
@@ -34,4 +35,32 @@ const getPixels = (image: Image) => {
 const saveImage = async (name: string, canvas: Canvas): Promise<void> =>
 	promises.writeFile(`${config.buildPath}/${name}.png`, canvas.toBuffer())
 
-export { getPixels, saveImage, getName }
+const rgbToHex = (r: number, g: number, b: number): string =>
+	'#' +
+	r.toString(16).padStart(2, '0') +
+	g.toString(16).padStart(2, '0') +
+	b.toString(16).padStart(2, '0')
+
+const join = (filters: ReadonlyArray<Filter>): Filter => (...args) => {
+	filters.forEach((filter) => filter(...args))
+}
+
+const pipe = (filters: ReadonlyArray<Filter>): Filter => (
+	context,
+	width,
+	height,
+	pixels
+) => {
+	let i
+	let localPixels = pixels
+
+	for (i = 0; i < filters.length; i += 1) {
+		filters[i](context, width, height, localPixels)
+
+		if (i < filters.length - 1) {
+			localPixels = context.getImageData(0, 0, width, height).data
+		}
+	}
+}
+
+export { getPixels, saveImage, getName, rgbToHex, join, pipe }

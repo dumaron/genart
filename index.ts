@@ -1,17 +1,14 @@
-import { rmdirSync, mkdirSync, existsSync } from 'fs'
 import { createCanvas, loadImage } from 'canvas'
 import { filters, images } from './src/data'
 import { getName, getPixels, saveImage } from './src/utils'
-import { execSync } from 'child_process'
 import { config } from './src/config'
+import { existsSync, mkdirSync } from 'fs'
 
 const { buildPath } = config
 
-// deletes all previous images: every execution re-create all the images
-// if (existsSync(buildPath)) {
-// 	rmdirSync(buildPath, { recursive: true })
-// }
-// mkdirSync(buildPath)
+if (!existsSync(buildPath)) {
+	mkdirSync(buildPath)
+}
 
 images.forEach(async (path) => {
 	const image = await loadImage(path)
@@ -20,9 +17,11 @@ images.forEach(async (path) => {
 	const rgba = getPixels(image)
 
 	Object.entries(filters).forEach(([filterName, filter], index) => {
-		console.log(`Processing image ${imageName} with filter ${filterName}`)
 		const canvas = createCanvas(width, height)
 		const context = canvas.getContext('2d')
+		
+		console.log(`Processing image ${imageName} with filter ${filterName}`)
+		
 		filter(context, width, height, rgba)
 		saveImage(`${imageName}_${index}`, canvas)
 	})
