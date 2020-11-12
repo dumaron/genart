@@ -1,8 +1,8 @@
-import { createCanvas, loadImage } from 'canvas'
-import { filters, images } from './src/data'
-import { getName, getPixels, saveImage } from './src/utils'
-import { config } from './src/config'
 import { existsSync, mkdirSync } from 'fs'
+import { createCanvas, loadImage } from 'canvas'
+import { config } from './src/config'
+import { transformers, images } from './src/data'
+import { getName, getPixels, saveImage } from './src/utils/utils'
 
 const { buildPath } = config
 
@@ -16,13 +16,13 @@ images.forEach(async (path) => {
 	const { width, height } = image
 	const rgba = getPixels(image)
 
-	Object.entries(filters).forEach(([filterName, filter], index) => {
+	Object.entries(transformers).forEach(([transformerName, fn], index) => {
 		const canvas = createCanvas(width, height)
 		const context = canvas.getContext('2d')
 		
-		console.log(`Processing image ${imageName} with filter ${filterName}`)
+		console.log(`Processing image ${imageName} with transformer ${transformerName}`)
 		
-		filter(context, width, height, rgba)
+		fn(context, width, height, rgba)
 		saveImage(`${imageName}_${index}`, canvas)
 	})
 })

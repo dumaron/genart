@@ -1,8 +1,9 @@
-import { Filter } from '../types'
-import { rgbToHex } from '../utils'
+import { Transformer } from '../types'
+import { rgbToHex } from '../utils/utils'
 
-const circle1: Filter = (context, width, height, pixels) => {
+const circle1: Transformer = (context, width, height, pixels) => {
 	let i
+	
 	for (i = 0; i < 50000; i += 1) {
 		const x = Math.floor(Math.random() * width)
 		const y = Math.floor(Math.random() * height)
