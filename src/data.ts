@@ -1,17 +1,38 @@
-import { Transformer } from './types'
+import { BindedTransformer } from './types'
 import { circle1 } from './filters/circle1'
 import { color1 } from './colors/color1'
 import { applyColor } from './utils/colors'
 import { color2 } from './colors/color2'
 import copyPixels from './filters/copyPixels'
+import { join } from './utils/utils'
 
 const images: ReadonlyArray<string> = ['/home/duma/foto/102D3500/DSC_0643.JPG']
 
-const transformers: { [name: string]: Transformer } = {
-	c1: applyColor(color1, copyPixels),
-	c2: applyColor(color2, copyPixels),
-	cc1: applyColor(color1, circle1),
-	cc2: applyColor(color2, circle1),
+const transformers: { [name: string]: BindedTransformer } = {
+	1: applyColor(color2, copyPixels()),
+	2: applyColor(color2, circle1()),
+	3: applyColor(
+		color2,
+		join([
+			circle1({ iterations: 1000, radiusMultiplier: 500 }),
+			circle1({ iterations: 1000, radiusMultiplier: 100 }),
+			circle1({ iterations: 30000, radiusMultiplier: 20 }),
+		])
+	),
+	4: applyColor(
+		color1,
+		join([
+			circle1({ iterations: 20000, radiusMultiplier: 100 }),
+			circle1({ iterations: 30000, radiusMultiplier: 25 }),
+		])
+	),
+	5: applyColor(
+		color2,
+		join([
+			circle1({ iterations: 20000, radiusMultiplier: 100 }),
+			circle1({ iterations: 30000, radiusMultiplier: 25 }),
+		])
+	),
 }
 
 export { images, transformers }

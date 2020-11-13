@@ -1,13 +1,27 @@
 import { Transformer } from '../types'
 import { rgbToHex } from '../utils/utils'
 
-const circle1: Transformer = (context, width, height, pixels) => {
+const { floor, random, PI } = Math
+
+type Args = {
+	iterations: number
+	radiusMultiplier: number
+}
+
+const circle1: Transformer<Args> = (args) => (
+	context,
+	width,
+	height,
+	pixels
+) => {
 	let i
-	
-	for (i = 0; i < 50000; i += 1) {
-		const x = Math.floor(Math.random() * width)
-		const y = Math.floor(Math.random() * height)
-		const radius = Math.floor(Math.random() * 20)
+	const iterations = args?.iterations || 50000
+	const radiusMultiplier = args?.radiusMultiplier || 20
+
+	for (i = 0; i < iterations; i += 1) {
+		const x = floor(random() * width)
+		const y = floor(random() * height)
+		const radius = floor(random() * radiusMultiplier)
 		const pixelIndex = (y * width + x) * 4
 
 		context.fillStyle = rgbToHex(
@@ -16,7 +30,7 @@ const circle1: Transformer = (context, width, height, pixels) => {
 			pixels[pixelIndex + 2]
 		)
 		context.beginPath()
-		context.arc(x - radius, y - radius, radius, 0, 2 * Math.PI)
+		context.arc(x - radius, y - radius, radius, 0, 2 * PI)
 		context.fill()
 		context.closePath()
 	}

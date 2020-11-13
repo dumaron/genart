@@ -10,10 +10,10 @@ const color2: ColorFilter = (pixels) => {
 	for (i = 0; i < pixels.length; i += 4) {
 		const test = pixels[0] + pixels[1] + pixels[2]
 
-		pixels[i] = pixels[0]
+		pixels[i] = pixels[i]
 
-		if (test < 400) {
-			pixels[i + 1] = Math.floor(pixels[i + 1] * 0.5)
+		if (test < 600) {
+			pixels[i + 2] = Math.floor(pixels[i + 1] * 0.7)
 		}
 	}
 

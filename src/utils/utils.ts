@@ -1,7 +1,7 @@
 import { createCanvas, Image, Canvas } from 'canvas'
 import { promises } from 'fs'
 import { config } from '../config'
-import { Transformer } from '../types'
+import { BindedTransformer } from '../types'
 
 /**
  * Return the name (without the extension) of the image specified by the path
@@ -41,11 +41,13 @@ const rgbToHex = (r: number, g: number, b: number): string =>
 	g.toString(16).padStart(2, '0') +
 	b.toString(16).padStart(2, '0')
 
-const join = (filters: ReadonlyArray<Transformer>): Transformer => (...args) => {
+const join = (filters: ReadonlyArray<BindedTransformer>): BindedTransformer => (
+	...args
+) => {
 	filters.forEach((filter) => filter(...args))
 }
 
-const pipe = (filters: ReadonlyArray<Transformer>): Transformer => (
+const pipe = (filters: ReadonlyArray<BindedTransformer>): BindedTransformer => (
 	context,
 	width,
 	height,
