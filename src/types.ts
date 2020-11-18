@@ -1,5 +1,4 @@
-type ColorFilter = (rgba: Uint8ClampedArray) => Uint8ClampedArray
-
+// transformers ========================================================================================================
 type BindedTransformer = (
 	context: CanvasRenderingContext2D,
 	width: number,
@@ -11,9 +10,22 @@ type Transformer<T = { [key: string]: any }> = (
 	args?: Partial<T>
 ) => BindedTransformer
 
+// colors ==============================================================================================================
+type BindedColorFilter = (rgba: Uint8ClampedArray) => Uint8ClampedArray
+
+type ColorFilter<T = { [key: string]: any }> = (
+	args?: Partial<T>
+) => BindedColorFilter
+
 type ColorApplier = (
-	filter: ColorFilter,
+	filter: BindedColorFilter,
 	transformer: BindedTransformer
 ) => BindedTransformer
 
-export { Transformer, ColorFilter, ColorApplier, BindedTransformer }
+export {
+	Transformer,
+	BindedColorFilter,
+	ColorApplier,
+	BindedTransformer,
+	ColorFilter,
+}

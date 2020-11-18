@@ -1,10 +1,19 @@
 import { ColorFilter } from '../types'
 
+type Args = {
+	index: 0 | 1 | 2
+	limit: number
+	multiplier: number
+}
+
 /**
  * Calls the transformer in input with pixels with different colors
- * @param pixels
+ * @param args
  */
-const color1: ColorFilter = (pixels) => {
+const color1: ColorFilter<Args> = (args) => (pixels) => {
+	const index = args?.index || 1
+	const limit = args?.limit || 400
+	const multiplier = args?.multiplier || 0.5
 	let i
 
 	for (i = 0; i < pixels.length; i += 4) {
@@ -13,8 +22,8 @@ const color1: ColorFilter = (pixels) => {
 		pixels[i] = pixels[0]
 		pixels[i + 2] = pixels[i + 1]
 
-		if (test < 400) {
-			pixels[i + 1] = Math.floor(pixels[i + 1] * 0.5)
+		if (test < limit) {
+			pixels[i + index] = Math.floor(pixels[i + index] * multiplier)
 		}
 	}
 
