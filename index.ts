@@ -16,13 +16,13 @@ images.forEach(async (path) => {
 	const { width, height } = image
 	const rgba = getPixels(image)
 
-	Object.entries(transformers).forEach(([transformerName, fn], index) => {
+	Object.entries(transformers).forEach(([transformerName, fn]) => {
 		const canvas = createCanvas(width, height)
 		const context = canvas.getContext('2d')
 		
 		console.log(`Processing image ${imageName} with transformer ${transformerName}`)
 		
 		fn(context, width, height, rgba)
-		saveImage(`${imageName}_${index}`, canvas)
+		saveImage(`${imageName}_${transformerName}`, canvas)
 	})
 })
