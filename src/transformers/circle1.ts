@@ -1,5 +1,5 @@
 import { Transformer } from '../types'
-import { rgbToHex } from '../utils/utils'
+import { pixelIndex, rgbToHex } from '../utils/utils'
 
 const { floor, random, PI } = Math
 
@@ -22,12 +22,12 @@ const circle1: Transformer<Args> = (args) => (
 		const x = floor(random() * width)
 		const y = floor(random() * height)
 		const radius = floor(random() * radiusMultiplier)
-		const pixelIndex = (y * width + x) * 4
+		const index = pixelIndex(x, y, width)
 
 		context.fillStyle = rgbToHex(
-			pixels[pixelIndex],
-			pixels[pixelIndex + 1],
-			pixels[pixelIndex + 2]
+			pixels[index],
+			pixels[index + 1],
+			pixels[index + 2]
 		)
 		context.beginPath()
 		context.arc(x - radius, y - radius, radius, 0, 2 * PI)

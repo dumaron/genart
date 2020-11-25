@@ -1,5 +1,5 @@
 import { Transformer } from '../types'
-import { rgbToHex } from '../utils/utils'
+import { pixelIndex, rgbToHex } from '../utils/utils'
 
 const { floor } = Math
 
@@ -22,12 +22,12 @@ const squares2: Transformer<Args> = (args) => (
 		for (column = 0; column < divider; column += 1) {
 			const x = squareSize * column
 			const y = squareSize * row
-			const pixelIndex = (y * width + x) * 4
+			const index = pixelIndex(x, y, width)
 
 			context.fillStyle = rgbToHex(
-				pixels[pixelIndex],
-				pixels[pixelIndex + 1],
-				pixels[pixelIndex + 2]
+				pixels[index],
+				pixels[index + 1],
+				pixels[index + 2]
 			)
 			context.fillRect(x, y, squareSize, squareSize)
 		}

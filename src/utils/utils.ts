@@ -65,4 +65,7 @@ const pipe = (filters: ReadonlyArray<BindedTransformer>): BindedTransformer => (
 	}
 }
 
-export { getPixels, saveImage, getName, rgbToHex, join, pipe }
+const pixelIndex = (x: number, y: number, width: number): number =>
+	(y * width + x) * 4
+
+export { getPixels, saveImage, getName, rgbToHex, join, pipe, pixelIndex }

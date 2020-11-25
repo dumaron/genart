@@ -1,15 +1,16 @@
 import { Transformer } from '../types'
 import { pixelIndex, rgbToHex } from '../utils/utils'
 
-const { floor, random } = Math
+const { floor, random, PI } = Math
 
 type Args = {
 	iterations: number
 	maxWidth: number
 	minWidth: number
+	fixedAngle: number
 }
 
-const squares1: Transformer<Args> = (args) => (
+const squares3: Transformer<Args> = (args) => (
 	context,
 	width,
 	height,
@@ -17,13 +18,15 @@ const squares1: Transformer<Args> = (args) => (
 ) => {
 	let i
 	const iterations = args?.iterations || 50000
-	const maxWidth = args?.maxWidth || 50
+	const maxWidth = args?.maxWidth || 200
 	const minWidth = args?.minWidth || 0
 
 	for (i = 0; i < iterations; i += 1) {
 		const x = floor(random() * width)
 		const y = floor(random() * height)
 		const side = floor(random() * (maxWidth - minWidth)) + minWidth
+		const degrees = args?.fixedAngle || random() * 360
+		const radians = (degrees * PI) / 180
 		const index = pixelIndex(x, y, width)
 
 		context.fillStyle = rgbToHex(
@@ -31,9 +34,14 @@ const squares1: Transformer<Args> = (args) => (
 			pixels[index + 1],
 			pixels[index + 2]
 		)
-		context.fillRect(x, y, side, side)
+
+		context.save()
+		context.translate(x + side / 2, y + side / 2)
+		context.rotate(radians)
+		context.fillRect(-side / 2, -side / 2, side, side)
+		context.restore()
 	}
 }
 
-export { squares1 }
-export default squares1
+export { squares3 }
+export default squares3
