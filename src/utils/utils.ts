@@ -3,6 +3,8 @@ import { promises } from 'fs'
 import { config } from '../config'
 import { BindedTransformer } from '../types'
 
+const { floor, random } = Math
+
 /**
  * Return the name (without the extension) of the image specified by the path
  * @param path The image path
@@ -68,4 +70,6 @@ const pipe = (filters: ReadonlyArray<BindedTransformer>): BindedTransformer => (
 const pixelIndex = (x: number, y: number, width: number): number =>
 	(y * width + x) * 4
 
-export { getPixels, saveImage, getName, rgbToHex, join, pipe, pixelIndex }
+const pick = (array: any[]): any => array[floor(array.length * random())]
+
+export { getPixels, saveImage, getName, rgbToHex, join, pipe, pixelIndex, pick }
