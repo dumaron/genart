@@ -31,11 +31,11 @@ const squares4: Transformer<Args> = (args) => (
 			const index = pixelIndex(x, y, width)
 			const radians = random() * (maxAngle - minAngle) + minAngle
 			const finalSide = side + sideIncrease
-			const move = random() < 0.2
+
+			const move = random() < 0.7
 			
 			if (move) {
-				x += random() * divider * 2
-				y -= random() * divider * 2
+				y -= random() * divider
 			}
 
 			context.save()

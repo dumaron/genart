@@ -20,7 +20,7 @@ const color2: ColorFilter<Args> = (args) => (pixels) => {
 		const test = pixels[0] + pixels[1] + pixels[2]
 
 		if (test < limit) {
-			pixels[i + index] = Math.floor(pixels[i + 1] * multiplier)
+			pixels[i + index] = Math.floor(pixels[i + index] * multiplier)
 		}
 	}
 

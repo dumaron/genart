@@ -29,3 +29,10 @@ export {
 	BindedTransformer,
 	ColorFilter,
 }
+
+export type Rectangle = {
+	x: number
+	y: number
+	width: number
+	height: number
+}

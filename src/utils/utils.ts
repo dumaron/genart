@@ -2,6 +2,7 @@ import { createCanvas, Image, Canvas } from 'canvas'
 import { promises } from 'fs'
 import { config } from '../config'
 import { BindedTransformer } from '../types'
+import { mean } from 'simple-statistics'
 
 const { floor, random } = Math
 
@@ -72,4 +73,44 @@ const pixelIndex = (x: number, y: number, width: number): number =>
 
 const pick = (array: any[]): any => array[floor(array.length * random())]
 
-export { getPixels, saveImage, getName, rgbToHex, join, pipe, pixelIndex, pick }
+const averagePixel = (
+	pixels: Uint8ClampedArray,
+	x: number,
+	y: number,
+	width: number,
+	height: number,
+	canvasWidth: number
+): [number, number, number] => {
+	let i, j
+
+	let rs: number = 0
+	let gs: number = 0
+	let bs: number = 0
+
+	for (i = 0; i < width; i += 1) {
+		for (j = 0; j < height; j += 1) {
+			const index = pixelIndex(x + i, y + j, canvasWidth)
+			rs += pixels[index]
+			gs += pixels[index + 1]
+			bs += pixels[index + 2]
+		}
+	}
+
+	return [rs / (width * height), gs / (width * height), bs / (width * height)]
+}
+
+const minIndex = (array: number[]): number =>
+	array.indexOf(Math.min.apply(this, array))
+
+export {
+	getPixels,
+	saveImage,
+	getName,
+	rgbToHex,
+	join,
+	pipe,
+	pixelIndex,
+	pick,
+	averagePixel,
+	minIndex,
+}
